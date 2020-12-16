@@ -1,0 +1,1 @@
+{"@context":"undefined/catalogusRecord.jsonld","@type":"http://www.w3.org/ns/dcat#CatalogRecord","@id":"{{ID}}","identificator":"{{VAL}}","creationDate":"{{DATETIME}}","titel":{"en":"{{STRING}}"},"hoofdonderwerp":"{{VAL}}"}

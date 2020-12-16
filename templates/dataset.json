@@ -1,0 +1,1 @@
+{"@context":"undefined/dataset.jsonld","@type":"http://www.w3.org/ns/dcat#Dataset","@id":"{{ID}}","toegankelijkheid":"{{VAL}}","beschrijving":{"en":"{{STRING}}"},"identificator":"{{VAL}}","titel":{"en":"{{STRING}}"},"contactinformatie":"{{VAL}}","distributie":"{{VAL}}","landingspagina":"{{ANYURI}}","thema":"{{VAL}}"}

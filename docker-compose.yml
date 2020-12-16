@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  kafka:
+    image: wurstmeister/kafka:2.11-2.0.1
+    depends_on:
+      - zookeeper
+    environment:
+      # HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+      KAFKA_ADVERTISED_HOSTNAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      # KAFKA_ADVERTISEDLISTENERS: INSIDE://:9092,OUTSIDE://{HOSTNAME_COMMAND}:9094
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CREATE_TOPICS: application-logs:1:1,full-policies:1:1:compact,policies-audit:1:1,checked-application-logs:1:1,data-portability-requests:1:1
+    volumes:
+      - kafkalogs:/kafka
+  zookeeper:
+    image: zookeeper:latest
+    volumes:
+      - zoodata:/data
+      - zoolog:/datalog
+
+volumes:
+    zoodata:
+      driver: local
+    zoolog:
+      driver: local
+    kafkalogs:
+      driver: local

@@ -1,0 +1,1 @@
+{"@context":"undefined/distributie.jsonld","@type":"http://www.w3.org/ns/dcat#Distribution","@id":"{{ID}}","identificator":"{{VAL}}","license":"{{VAL}}","titel":{"en":"{{STRING}}"},"wordtAangebodenDoor":"{{VAL}}","toegangsUrl":"{{ANYURI}}","downloadUrl":"{{ANYURI}}"}

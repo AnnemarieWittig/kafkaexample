@@ -3,6 +3,8 @@ const jsonfile = require('jsonfile')
 const nunjucks = require('nunjucks');
 
 var program = require('commander')
+import kafka from "kafka-node";
+import uuid from "uuid";
 
 program
     .version('0.8.0')
@@ -19,11 +21,11 @@ program.on('--help', function () {
 
 program.parse(process.argv)
 
-var directory = program.directory || '/exampletemplates/'
+var directory = './templates'
 nunjucks.configure(directory, {
     autoescape: true
 })
-
+/*
 render_exampletemplate_from_json_ld_file(program.directory, program.outputdirectory)
 console.log('done')
 
@@ -46,7 +48,7 @@ function render_exampletemplate_from_json_ld_file(directory, outputdirectory) {
         });
     });
 
-}
+}*/
 
 function getOutputFile (dir, file) {
     if (dir.charAt(dir.length-1) == "\\" || dir.charAt(dir.length-1) == "/") {
@@ -137,4 +139,59 @@ function generate_uri() {
     return "http://" + generate_value(8) + "/" + generate_value(14) + "/" + generate_value(10) + "#"
 }
 
-//uuid could be added to generate that
+const client = new kafka.Client("kafka", "my-client-id", {
+    sessionTimeout: 300,
+    spinDelay: 100,
+    retries: 2
+});
+
+const producer = new kafka.HighLevelProducer(client);
+producer.on("ready", function () {
+    console.log("Kafka Producer is connected and ready.");
+});
+
+// For this demo we just log producer errors to the console.
+producer.on("error", function (error) {
+    console.error(error);
+});
+
+const KafkaService = {
+    
+    sendRecord: ({ type, userId, sessionId, data }, callback = () => { }) => {
+        if (!userId) {
+            return callback(new Error("A userId must be provided."));
+        }
+        fs.readdir(directory, (err, files) => {
+            files.forEach(file => {
+                jsonfile.readFile(directory + "\\" + file)
+                    .then(
+                        function (json) {
+                            json = iterate_over_json(json)
+                            var output = getOutputFile(outputdirectory, file)
+                            const event = {
+                                id: uuid.v4(),
+                                timestamp: Date.now(),
+                                userId: userId,
+                                sessionId: sessionId,
+                                type: type,
+                                data: data
+                            };
+                            // Create a new payload
+                            const record = [
+                                {
+                                    topic: "test",
+                                    messages: output,
+                                    attributes: 1 /* Use GZip compression for the payload */
+                                }
+                            ];
+
+                            //Send record to Kafka and log result/error
+                            producer.send(record, callback);
+                        })
+                    .catch(error => { console.error(error); process.exitCode = 1 })
+            });
+        });
+    }
+};
+
+export default KafkaService;

@@ -1,0 +1,1 @@
+{"@context":"undefined/agent.jsonld","@type":"http://purl.org/dc/terms/Agent","@id":"{{ID}}","naam":{"en":"{{STRING}}"}}

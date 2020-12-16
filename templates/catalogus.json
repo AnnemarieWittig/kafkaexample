@@ -1,0 +1,1 @@
+{"@context":"undefined/catalogus.jsonld","@type":"http://www.w3.org/ns/dcat#Catalog","@id":"{{ID}}","licentie":"{{VAL}}","beschrijving":{"en":"{{STRING}}"},"identificator":"{{VAL}}","uitgever":"{{VAL}}","titel":{"en":"{{STRING}}"},"contactinformatie":"{{VAL}}","record":"{{VAL}}"}
