@@ -3,8 +3,8 @@ const jsonfile = require('jsonfile')
 const nunjucks = require('nunjucks');
 
 var program = require('commander')
-import kafka from "kafka-node";
-import uuid from "uuid";
+const kafka = require('kafka-node');
+const uuid = require('uuid');
 
 program
     .version('0.8.0')
@@ -104,7 +104,7 @@ function generate_uri() {
     return "http://" + generate_value(8) + "/" + generate_value(14) + "/" + generate_value(10) + "#"
 }
 
-const client = new kafka.Client("kafka", "my-client-id", {
+const client = new kafka.KafkaClient("kafka", "my-client-id", {
     sessionTimeout: 300,
     spinDelay: 100,
     retries: 2
@@ -122,12 +122,7 @@ producer.on("error", function (error) {
 
 const kafkaHost = 'localhost:9092';
 
-export function publish(topic) {
-    // The client connects to a Kafka broker
-    const client = new Client({ kafkaHost });
-    // The producer handles publishing messages over a topic
-    const producer = new Producer(client);
-
+function publish(topic) {
     // First wait for the producer to be initialized
     producer.on(
         'ready',
@@ -170,8 +165,8 @@ export function publish(topic) {
         }
     );
 }
-
-
+exports.publish = publish;
+/*
 const KafkaService = {
 
     sendRecord: ({ type, userId, sessionId, data }, callback = () => { }) => {
@@ -198,7 +193,7 @@ const KafkaService = {
                                 {
                                     topic: "test",
                                     messages: output,
-                                    attributes: 1 /* Use GZip compression for the payload */
+                                    attributes: 1 //use gzip compression for the payload 
                                 }
                             ];
 
@@ -211,4 +206,4 @@ const KafkaService = {
     }
 };
 
-export default KafkaService;
+export default KafkaService;*/

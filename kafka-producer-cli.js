@@ -2,8 +2,9 @@
 /**
  * CLI tool to publish messages to Kafka topics
  */
-import * as program from 'commander';
-import { publish } from './producer';
+var program = require('commander')
+var producer = require('./producer')
+ //import { publish } from './producer';
 
 program
     .version('0.0.1')
@@ -14,4 +15,4 @@ program
 const message = program.args.join(' ');
 console.log('TOPIC:', program.topic);
 console.log('MESSAGE:', message);
-publish(program.topic, message);
+producer.publish(program.topic, message);
