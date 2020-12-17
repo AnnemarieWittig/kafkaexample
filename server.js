@@ -1,7 +1,7 @@
-import * as dotenv from 'dotenv';
-import { Server, Message, WebSocketClient } from 'ws';
-import * as express from 'express';
-import { kafkaSubscribe } from './consumer';
+const dotenv = require('dotenv');
+const Server = require('ws');
+const express = require('express');
+const kafkaSubscribe = require('./consumer');
 dotenv.config();
 
 const PORT = parseInt(process.env.PORT) || 3210;
